@@ -1,6 +1,6 @@
 function myFunction() {
   //指定のドキュメントを開く
-  var body = DocumentApp.openByUrl("https://docs.google.com/document/d/1iAWFMfaWnuBM4FiZu3Bgh8ujJ4rvXwwK5d-zwcN4EaQ/edit");
+  var body = DocumentApp.openByUrl("//新しいドキュメントのURLを入れる");
   body.clear();
   var paragraphs = DocumentApp.getActiveDocument().getBody().getParagraphs();
   //var p1 = paragraphs[0]
