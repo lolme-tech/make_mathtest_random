@@ -5,7 +5,7 @@ function myFunction() {
   var paragraphs = DocumentApp.getActiveDocument().getBody().getParagraphs();
   //var p1 = paragraphs[0]
   //段落にテキストを挿入する。
-  //p1.insertText( 0, "1+1=" );
+  //p1.insertText( 0, "1+1=" );no
   body.appendParagraph("2+1=")
   for(var i=0;i<=3;i++)
   {
