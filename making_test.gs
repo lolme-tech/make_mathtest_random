@@ -1,3 +1,4 @@
+//clasp open(close)でGASの環境開始
 function myFunction() {
   //指定のドキュメントを開く
   var body = DocumentApp.openByUrl("//新しいドキュメントのURLを入れる");
