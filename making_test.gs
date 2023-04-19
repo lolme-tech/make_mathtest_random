@@ -2,21 +2,22 @@
 //clasp pushでgoogleにコードをアップロード
 
 //まずは整数同士の+-*%演算を実行するプログラムの作成
+
 //作成するテストの問題を変更させる際は
 //---------------------ここから----------------------------
 //整数だけの演算テストを作成する際はこちらを変更
-var minInteger = -100
-var maxInteger = 100
-
+var minInteger = -100;
+var maxInteger = 100;
 //--------------ここまでの変数を変更する--------------------
+
 function myFunction() {
   var body = DocumentApp.openByUrl("https://docs.google.com/document/d/1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w/edit");
   body.clear();
-  var p0 = paragraph[0]
-  var p1 = paragraph[1]
-  p0.inserttext(" 次を計算をしてください ").setFontSize(10);
+  var paragraphs = body.getParagraphs();
+  var p0 = paragraphs[0];
+  p0.insertText(0 , " 次を計算をしてください \n").setFontSize(15);
   for(let i = 1; i < 16; i++){
-    p1.inserttext("(" + i + ")  " + createInteger(minInteger , maxInteger) + " " + createOperater() + " " + createInteger(minInteger , maxInteger) + " = \n" ).setFontSize(20);
+    body.appendParagraph("(" + i + ")  " + createInteger(minInteger , maxInteger) + " " + createOperater() + " " + createInteger(minInteger , maxInteger) + " = \n\n" ).setFontSize(18);
   };
 }
 
@@ -28,6 +29,9 @@ function myFunction() {
 //-------------------------------------------------------
 function createInteger(minInt , maxInt){
   var randomInt = Math.floor ( Math.random() * (maxInt + 1 - minInt) ) + minInt ;
+  if(randomInt < 0){
+    randomInt = "( " + randomInt + " )";
+  };
   return randomInt ;
 }
 
