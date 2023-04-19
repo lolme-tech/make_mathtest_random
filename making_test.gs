@@ -12,9 +12,11 @@ var maxInteger = 100
 function myFunction() {
   var body = DocumentApp.openByUrl("https://docs.google.com/document/d/1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w/edit");
   body.clear();
-  body.appendParagraph(" 次を計算をしてください ").setFontSize(10);
+  var p0 = paragraph[0]
+  var p1 = paragraph[1]
+  p0.inserttext(" 次を計算をしてください ").setFontSize(10);
   for(let i = 1; i < 16; i++){
-    body.appendParagraph("(" + i + ")  " + createInteger(minInteger , maxInteger) + " " + createOperater() + " " + createInteger(minInteger , maxInteger) + " = \n" ).setFontSize(20);
+    p1.inserttext("(" + i + ")  " + createInteger(minInteger , maxInteger) + " " + createOperater() + " " + createInteger(minInteger , maxInteger) + " = \n" ).setFontSize(20);
   };
 }
 
