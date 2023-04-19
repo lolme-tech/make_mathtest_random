@@ -2,36 +2,33 @@
 //clasp pushでgoogleにコードをアップロード
 
 //まずは整数同士の+-*%演算を実行するプログラムの作成
-function myFunction() {
-  //指定のドキュメントを開く
-  //var body = DocumentApp.openByUrl("//新しいドキュメントのURLを入れる");
-  //ドキュメントを白紙にする
-  //body.clear();
-  //var paragraphs = DocumentApp.getActiveDocument().getBody().getParagraphs();
-  console.log(createLargeInteger(1,100));
-  //var p1 = paragraphs[0]
-  //段落にテキストを挿入する。
-  //p1.insertText( 0, "1+1=" );no
-  body.appendParagraph("2+1=")
-  for(var i=0;i<=3;i++)
-  {
-    body.appendParagraph("");
-  }  
-  body.appendParagraph("1+1=")
-  //p1.editAsText().setFontSize(20);
-  paragraphs[0].editAsText().setFontSize(20);
+//作成するテストの問題を変更させる際は
+//---------------------ここから----------------------------
+//整数だけの演算テストを作成する際はこちらを変更
+var minInteger = -100
+var maxInteger = 100
 
+//--------------ここまでの変数を変更する--------------------
+function myFunction() {
+  var body = DocumentApp.openByUrl("https://docs.google.com/document/d/1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w/edit");
+  body.clear();
+  body.appendParagraph(" 次を計算をしてください ").setFontSize(10);
+  for(let i = 1; i < 16; i++){
+    body.appendParagraph("(" + i + ")  " + createInteger(minInteger , maxInteger) + " " + createOperater() + " " + createInteger(minInteger , maxInteger) + " = \n" ).setFontSize(20);
+  };
 }
 
-//ランダムな大きな整数を作成する関数
+//ランダムな整数を作成する関数
 //---------------------関数の説明-------------------------
 //最小値minIntと最大値maxIntを与えると最小値からその最大値までの間のランダムな整数を返す
 //例えば1と100を与えると35などの値を返す(1 <= randomInt <= 100)
+//※最小値にはマイナスの値も適応される
 //-------------------------------------------------------
-function createLargeInteger(minInt , maxInt){
+function createInteger(minInt , maxInt){
   var randomInt = Math.floor ( Math.random() * (maxInt + 1 - minInt) ) + minInt ;
   return randomInt ;
 }
+
 //ランダムな演算子を返す関数
 //---------------------関数の説明-------------------------
 //+-×÷の4つの演算子の中からランダムで1つ返す
@@ -41,6 +38,7 @@ function createOperater(){
   var randomInt = Math.floor ( Math.random() * (3 + 1 - 0) ) + 0 ;
   return operater[randomInt] ;
 }
+
 //ランダムな小数点を作成する関数
 //---------------------関数の説明-------------------------
 //最小値minDeciと最大値maxDeciを与えると最小値から最大値までの間のランダムな小数を返す
