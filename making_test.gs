@@ -45,6 +45,8 @@ function IntegerProblem(){
     body.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = " + answerQuestion(clause1[i], operater[i], clause2[i])).setFontSize(15);
   };
 }
+
+
 //ランダムな整数を作成する関数
 //------------------------------------関数の説明----------------------------------------------
 //最小値minIntと最大値maxIntを与えると最小値からその最大値までの間のランダムな整数を返す
@@ -58,11 +60,11 @@ function createInteger(minInt , maxInt){
 
 //ランダムな演算子を返す関数
 //---------------------関数の説明-------------------------
-//+, -, ×, ÷ の演算子の中からランダムで1つ返す
+//+, -, × の演算子の中からランダムで1つ返す
 //-------------------------------------------------------
 function createOperater(){
-  var operater = ["+" , "-" , "×" , "÷"] ;
-  var randomInt = Math.floor ( Math.random() * (3 + 1 - 0) ) + 0 ;
+  var operater = ["+" , "-" , "×"] ;
+  var randomInt = Math.floor ( Math.random() * 2 ) ;
   return operater[randomInt] ;
 }
 
@@ -81,13 +83,14 @@ function answerQuestion(clause1, operater, clause2){
     case "×":
       return clause1 * clause2;
     case "÷":
+      var remainder = clause1 % clause2;
       if (clause1 < 0){
         clause1 = clause1 * (-1);
       }else if(clause2 < 0){
         clause2 = clause2 * (-1);
       }
       var division =  clause1 / clause2 | 0;
-      var remainder = clause1 % clause2;
+      console.log(remainder);
       return division + " 余り " + remainder;
     default:
       break;
