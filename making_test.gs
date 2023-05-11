@@ -6,10 +6,10 @@
 //整数同士の演算の問題であれば1を、
 //～～～であれば2を、
 //～～～であれば3を、
-var selectProblem = 1
+const selectProblem = 1
 //整数だけの演算テストを作成する際はこちらを変更
-var minInteger = -100;
-var maxInteger = 100;
+const minInteger = -100;
+const maxInteger = 100;
 //------------------------------------ここまでの変数を変更する
 
 function myFunction() {
@@ -26,13 +26,13 @@ function myFunction() {
 
 //整数同士の演算をする問題を作成する関数
 function IntegerProblem(){
-  var body = DocumentApp.openByUrl("https://docs.google.com/document/d/1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w/edit");
-  var clause1 = [] ;
-  var clause2 = [] ;
-  var operater = [] ;
+  const body = DocumentApp.openByUrl("https://docs.google.com/document/d/1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w/edit");
+  const clause1 = [] ;
+  const clause2 = [] ;
+  const operater = [] ;
   body.clear();
-  var paragraphs = body.getParagraphs();
-  var p0 = paragraphs[0];
+  const paragraphs = body.getParagraphs();
+  const p0 = paragraphs[0];
   p0.insertText(0 , " 次を計算をしてください \n").setFontSize(15);
   for(let i = 0; i < 15; i++){
     clause1.push(createInteger(minInteger , maxInteger));
@@ -54,7 +54,7 @@ function IntegerProblem(){
 //※最小値にはマイナスの値も適応できる
 //-------------------------------------------------------------------------------------------
 function createInteger(minInt , maxInt){
-  var randomInt = Math.floor ( Math.random() * (maxInt + 1 - minInt) ) + minInt ;
+  const randomInt = Math.floor ( Math.random() * (maxInt + 1 - minInt) ) + minInt ;
   return randomInt ;
 }
 
@@ -63,8 +63,8 @@ function createInteger(minInt , maxInt){
 //+, -, × の演算子の中からランダムで1つ返す
 //-------------------------------------------------------
 function createOperater(){
-  var operater = ["+" , "-" , "×"] ;
-  var randomInt = Math.floor ( Math.random() * 2 ) ;
+  const operater = ["+" , "-" , "×"] ;
+  const randomInt = Math.floor ( Math.random() * 2 ) ;
   return operater[randomInt] ;
 }
 
@@ -83,13 +83,13 @@ function answerQuestion(clause1, operater, clause2){
     case "×":
       return clause1 * clause2;
     case "÷":
-      var remainder = clause1 % clause2;
+      const remainder = clause1 % clause2;
       if (clause1 < 0){
         clause1 = clause1 * (-1);
       }else if(clause2 < 0){
         clause2 = clause2 * (-1);
       }
-      var division =  clause1 / clause2 | 0;
+      const division =  clause1 / clause2 | 0;
       console.log(remainder);
       return division + " 余り " + remainder;
     default:
