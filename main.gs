@@ -1,12 +1,24 @@
 function onOpen() {
   var ui = DocumentApp.getUi();
-  ui.createMenu('GAS')
-    .addItem('実行', 'myFunction')
+  ui.createMenu('メニュー')
+    .addItem('問題を作る', 'myFunction')
+    .addItem('問題作成メニューを表示', 'createProblemTable')
     .addToUi();
 }
 
-const minInteger = -100;
-const maxInteger = 100;
+function createProblemTable() {
+  //表データ（配列）
+  const rowsData = [['問題選択', ''],
+  ['最大値', '0'],
+  ['最小値', '0'],
+  ];
+  const targetDoc = DocumentApp.openById('1OK-lyK7N27-j7nUHz80sOm4Pivoc9ovT5ECx-NCXD-U');
+  targetDoc.clear();
+  let body = targetDoc.getBody();
+
+  //表の作成
+  body.appendTable(rowsData);
+}
 
 function myFunction() {
   const targetDoc = DocumentApp.openById('1OK-lyK7N27-j7nUHz80sOm4Pivoc9ovT5ECx-NCXD-U');
@@ -18,7 +30,6 @@ function myFunction() {
 
   targetDoc.clear();
   targetDoc.getParagraphs()[0].insertText(0, " 次を計算をしてください \n").setFontSize(15);
-  console.log("start ; " + problemRange)
 
   // 問題作成
   const problemList = createProblem(sort, problemRange, quantity);
@@ -38,12 +49,11 @@ function myFunction() {
       targetDoc.appendParagraph("(" + (index + 1) + ")  " + addBrackets(problemInfo.first) + " " + operater[problemInfo.operater] + " " + addBrackets(problemInfo.second) + " = " + problemInfo.result + " 余り " + problemInfo.isRemainder).setFontSize(15);
     }
   })
-
 }
 
 /**
  * 選択された問題を作成するメソッド
- * @param {String} sort - 選択肢　1:整数の問題/2:少数の問題/3:分数の問題
+ * @param {String} sort - 選択肢 1:整数の問題/2:少数の問題/3:分数の問題
  * @param {Object} problemRange - 問題の範囲
  * @param {Number} quantity - 問題数
  * @return void 
@@ -58,5 +68,3 @@ const createProblem = (sort, problemRange, quantity) => {
   }
   return;
 }
-
-
