@@ -6,6 +6,7 @@ function onOpen() {
     .addToUi();
 }
 
+//問題作成メニュー表示の関数
 function createProblemTable() {
   //表データ（配列）
   const rowsData = [['問題選択', ''],
@@ -20,13 +21,14 @@ function createProblemTable() {
   body.appendTable(rowsData);
 }
 
+//問題作成の関数
 function myFunction() {
   const targetDoc = DocumentApp.openById('1OK-lyK7N27-j7nUHz80sOm4Pivoc9ovT5ECx-NCXD-U');
   const targetTable = targetDoc.getBody().getTables()[0]
   const sort = Number(targetTable.getRow(0).getCell(1).getText());
   const problemRange = { minInt: Number(targetTable.getRow(1).getCell(1).getText()), maxInt: Number(targetTable.getRow(2).getCell(1).getText()) }
   const quantity = 15
-  const operater = ["+", "-", "×", "÷"];
+  const operater = ["+", "-", "×"];
 
   targetDoc.clear();
   targetDoc.getParagraphs()[0].insertText(0, " 次を計算をしてください \n").setFontSize(15);

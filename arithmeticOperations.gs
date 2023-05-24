@@ -12,7 +12,7 @@ const createIntegerProblemList = (problemRange, quantity) => {
 
     problemInfo.first = Math.floor(Math.random() * (problemRange.maxInt + 1 - problemRange.minInt)) + problemRange.minInt;
     problemInfo.second = Math.floor(Math.random() * (problemRange.maxInt + 1 - problemRange.minInt)) + problemRange.minInt;
-    problemInfo.operater = Math.floor(Math.random() * 4);
+    problemInfo.operater = Math.floor(Math.random() * 3);
 
     problemList.push(problemInfo)
   }
@@ -57,6 +57,10 @@ const calculate = (outputList) => {
   return outputList
 }
 
+//渡された数値にマイナスがあればカッコをつけて返す関数
+//---------------------関数の説明-------------------------
+//例えば-100が渡されると文字列として( -100 )を返す
+//-------------------------------------------------------
 function addBrackets(value) {
   if (value < 0) {
     return "( " + value + " )";
