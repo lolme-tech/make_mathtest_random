@@ -18,6 +18,26 @@ const createIntegerProblemList = (problemRange, quantity) => {
   }
   return problemList;
 }
+/**
+ * 小数の問題を作るメソッド
+ * @param {Number} minInt - 小数部分の桁数 
+ * @param {Number} maxInt - 実数部分の桁数
+ * @param {Number} quantity - 問題数 
+ * @returns {Object} problemList - 問題のリスト
+ */
+const createDecimalProblemList = (problemRange, quantity) => {
+  const problemList = []
+  for (let i = 0; i < quantity; i++){
+    const problemInfo = { first: 0, second: 0, operater: '' }
+
+    problemInfo.first = addNegative(Math.floor((Math.random() * problemRange.maxInt * 10) / problemRange.minInt * 10));
+    problemInfo.second = addNegative(Math.floor((Math.random() * problemRange.maxInt * 10) / problemRange.minInt * 10));
+    problemInfo.operater = Math.floor(Math.random() * 3);
+
+    problemList.push(problemInfo)
+  }
+  return problemList;
+}
 
 /**
  * 問題の計算をするメソッド
@@ -68,5 +88,13 @@ function addBrackets(value) {
     return value;
   }
 }
-
-
+//渡された数値にランダムでマイナスかプラスを割り当てる
+function addNegative(value) {
+  const zeroToOne = Math.floor(Math.random() * 2)
+  //1であれば正の数、0であれば負の数を割り当てる
+  if (zeroToOne != 0){
+    return value;
+  }else{
+    return -1*value;
+  }
+}
