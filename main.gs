@@ -17,6 +17,7 @@ function createIntegerTable() {
   const rowsData = [['問題割り当て(この行はいじらないでください)', '1'], 
   ['最大値⇒生成する問題の最大値を決定してください', '100'],
   ['最小値⇒生成する問題の最小値を決定してください', '-100'],
+  ['', ''],
   ];
   const targetDoc = DocumentApp.openById(openDocumentId);
   targetDoc.clear();
@@ -30,7 +31,8 @@ function createIntegerTable() {
 function createDecimalTable() {
   //表データ（配列）
   const rowsData = [['問題割り当て(この行はいじらないでください)', '2'], 
-  ['実数部分の桁数⇒実数部分を何桁にするか決定してください', '2'],
+  ['最大値⇒生成する問題の最大値を決定してください', '100'],
+  ['最小値⇒生成する問題の最小値を決定してください', '-100'],
   ['小数部分の桁数⇒小数部分を何桁にするか決定してください', '2'],
   ];
   const targetDoc = DocumentApp.openById(openDocumentId);
@@ -41,27 +43,14 @@ function createDecimalTable() {
   body.appendTable(rowsData);
 }
 
-// //分数問題作成の関数(開発中)
-// function createFractionTable() {
-//   //表データ（配列）
-//   const rowsData = [['問題割り当て(この行はいじらないでください)', '3'], 
-//   ['最大値⇒ランダムに生成する問題の最大値を決定してください', '100'],
-//   ['最小値⇒ランダムに生成する問題の最小値を決定してください', '-100'],
-//   ];
-//   const targetDoc = DocumentApp.openById(openDocumentId);
-//   targetDoc.clear();
-//   let body = targetDoc.getBody();
-
-//   //表の作成
-//   body.appendTable(rowsData);
-// }
 
 //問題作成の関数
 function myFunction() {
   const targetDoc = DocumentApp.openById(openDocumentId);
   const targetTable = targetDoc.getBody().getTables()[0]
   const sort = Number(targetTable.getRow(0).getCell(1).getText());
-  const problemRange = { minInt: Number(targetTable.getRow(1).getCell(1).getText()), maxInt: Number(targetTable.getRow(2).getCell(1).getText()) }
+  const digit = Number(targetTable.getRow(3).getCell(1).getText());
+  const problemRange = { minInt: Number(targetTable.getRow(1).getCell(1).getText()), maxInt: Number(targetTable.getRow(2).getCell(1).getText())}
   const quantity = 15
   const operater = ["+", "-", "×"];
 
@@ -69,7 +58,7 @@ function myFunction() {
   targetDoc.getParagraphs()[0].insertText(0, " 次を計算をしてください  \n 名前:").setFontSize(15);
 
   // 問題作成
-  const problemList = createProblem(sort, problemRange, quantity);
+  const problemList = createProblem(sort, problemRange, quantity, digit);
 
   // 問題出力
   problemList.forEach((problemInfo, index) => {
@@ -95,12 +84,12 @@ function myFunction() {
  * @return void 
  * 
  */
-const createProblem = (sort, problemRange, quantity) => {
+const createProblem = (sort, problemRange, quantity, digit) => {
   switch (sort) {
     case 1:
       return createIntegerProblemList(problemRange, quantity);
     case 2:
-      return createDecimalProblemList(problemRange, quantity);
+      return createDecimalProblemList(problemRange, quantity, digit);
     default:
       break
   }

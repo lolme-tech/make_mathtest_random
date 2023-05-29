@@ -18,20 +18,14 @@ const createIntegerProblemList = (problemRange, quantity) => {
   }
   return problemList;
 }
-/**
- * 小数の問題を作るメソッド
- * @param {Number} minInt - 小数部分の桁数 
- * @param {Number} maxInt - 実数部分の桁数
- * @param {Number} quantity - 問題数 
- * @returns {Object} problemList - 問題のリスト
- */
-const createDecimalProblemList = (problemRange, quantity) => {
+
+//小数の問題を作るメソッド
+const createDecimalProblemList = (problemRange, quantity, digit) => {
   const problemList = []
   for (let i = 0; i < quantity; i++){
     const problemInfo = { first: 0, second: 0, operater: '' }
-
-    problemInfo.first = addNegative(Math.floor((Math.random() * problemRange.maxInt * 10) / problemRange.minInt * 10));
-    problemInfo.second = addNegative(Math.floor((Math.random() * problemRange.maxInt * 10) / problemRange.minInt * 10));
+    problemInfo.first = createDecimal((Math.random() * (problemRange.maxInt + 1 - problemRange.minInt) + problemRange.minInt), digit)
+    problemInfo.second = createDecimal((Math.random() * (problemRange.maxInt + 1 - problemRange.minInt) + problemRange.minInt), digit)
     problemInfo.operater = Math.floor(Math.random() * 3);
 
     problemList.push(problemInfo)
@@ -64,7 +58,6 @@ const calculate = (outputList) => {
         } else if (problemInfo.second < 0) {
           problemInfo.second = problemInfo.second * (-1);
         }
-        const division = problemInfo.first / problemInfo.second | 0;
         Object.assign(problemInfo, { result: problemInfo.first / problemInfo.second | 0 });
         if (problemInfo.first % problemInfo.second !== 0) {
           Object.assign(problemInfo, { isRemainder: problemInfo.first % problemInfo.second });
@@ -89,12 +82,10 @@ function addBrackets(value) {
   }
 }
 //渡された数値にランダムでマイナスかプラスを割り当てる
-function addNegative(value) {
-  const zeroToOne = Math.floor(Math.random() * 2)
-  //1であれば正の数、0であれば負の数を割り当てる
-  if (zeroToOne != 0){
-    return value;
-  }else{
-    return -1*value;
+function createDecimal(value, digit) {
+  let factorial = 1;
+  for(let i = 0; i < digit; i++){
+    factorial*=10
   }
+  return Math.floor(value * factorial) / factorial;
 }
