@@ -10,41 +10,103 @@ const selectProblem = 1
 //整数だけの演算テストを作成する際はこちらを変更
 const minInteger = -100;
 const maxInteger = 100;
+const clause1 = [] ;
+const clause2 = [] ;
+const operater = [] ;
 //------------------------------------ここまでの変数を変更する
+//ドキュメントIDの指定
+const openDocumentId = '1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w'
+
+function onOpen() {
+  var ui = DocumentApp.getUi();
+  ui.createMenu('メニュー')
+    .addItem('問題作成', 'myFunction')
+    .addItem('整数問題', 'createIntegerTable')
+    .addItem('小数問題', 'createDecimalTable')
+    .addItem('分数問題(開発中)', 'createFractionTable')
+    .addToUi();
+}
+
+//整数問題作成の関数
+function createIntegerTable() {
+    //表データ（配列）
+    const rowsData = [['問題割り当て(この行はいじらないでください)', '1'], 
+    ['最大値⇒生成する問題の最大値を決定してください', '100'],
+    ['最小値⇒生成する問題の最小値を決定してください', '-100'],
+    ['', ''],
+    ];
+    const targetDoc = DocumentApp.openById(openDocumentId);
+    targetDoc.clear();
+    let body = targetDoc.getBody();
+    //表の作成
+    body.appendTable(rowsData);
+  }
+  
+  //小数問題作成の関数
+  function createDecimalTable() {
+    //表データ（配列）
+    const rowsData = [['問題割り当て(この行はいじらないでください)', '2'], 
+    ['最大値⇒生成する問題の最大値を決定してください', '100'],
+    ['最小値⇒生成する問題の最小値を決定してください', '-100'],
+    ['小数部分の桁数⇒小数部分を何桁にするか決定してください', '2'],
+    ];
+    const targetDoc = DocumentApp.openById(openDocumentId);
+    targetDoc.clear();
+    let body = targetDoc.getBody();
+    //表の作成
+    body.appendTable(rowsData);
+  }
 
 function myFunction() {
-  switch(selectProblem){
-    case 1:
-      IntegerProblem();
-    //現在作成中
-    case 2:
-      break;
-    default:
-      break;
-  }
+    //問題作成の関数
+    const targetDoc = DocumentApp.openById(openDocumentId);
+    const targetTable = targetDoc.getBody().getTables()[0]
+    const sort = Number(targetTable.getRow(0).getCell(1).getText());
+    const digit = Number(targetTable.getRow(3).getCell(1).getText());
+    const problemRange = { minInt: Number(targetTable.getRow(1).getCell(1).getText()), maxInt: Number(targetTable.getRow(2).getCell(1).getText())}
+    createProblem(sort, problemRange, digit);
+
 }
 
 //整数同士の演算をする問題を作成する関数
-function IntegerProblem(){
-  const body = DocumentApp.openByUrl("https://docs.google.com/document/d/1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w/edit");
-  const clause1 = [] ;
-  const clause2 = [] ;
-  const operater = [] ;
-  body.clear();
-  const paragraphs = body.getParagraphs();
+function createIntegerProblem(){
+  const targetDoc = DocumentApp.openById(openDocumentId);
+  targetDoc.clear();
+  const paragraphs = targetDoc.getParagraphs();
   const p0 = paragraphs[0];
   p0.insertText(0 , " 次を計算をしてください \n").setFontSize(15);
+  p0.insertText(1 , "名前:").setFontSize(20);
   for(let i = 0; i < 15; i++){
     clause1.push(createInteger(minInteger , maxInteger));
     clause2.push(createInteger(minInteger , maxInteger));
     operater.push(createOperater());
-    body.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = \n\n").setFontSize(18);
+    targetDoc.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = \n\n").setFontSize(18);
   };
-  body.appendPageBreak();
-  for(let i = 0; i <15; i++){
-    body.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = " + answerQuestion(clause1[i], operater[i], clause2[i])).setFontSize(15);
+  targetDoc.appendPageBreak();
+  for(let i = 0; i < 15; i++){
+    targetDoc.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = " + answerQuestion(clause1[i], operater[i], clause2[i])).setFontSize(15);
   };
 }
+
+//小数の問題を作るメソッド
+function createDecimalProblem(problemRange, digit){
+    const targetDoc = DocumentApp.openById(openDocumentId);
+    targetDoc.clear();
+    const paragraphs = targetDoc.getParagraphs();
+    const p0 = paragraphs[0];
+    p0.insertText(0 , " 次を計算をしてください \n 名前:").setFontSize(15);
+    p0.insertText(1 , "名前:").setFontSize(20);
+    for(let i = 0; i < 15; i++){
+        clause1.push(createDecimal((Math.random() * (problemRange.maxInt + 1 - problemRange.minInt) + problemRange.minInt), digit));
+        clause2.push(createDecimal((Math.random() * (problemRange.maxInt + 1 - problemRange.minInt) + problemRange.minInt), digit));
+        operater.push(createOperater());
+        targetDoc.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = \n\n").setFontSize(18);
+    };
+    targetDoc.appendPageBreak();
+    for(let i = 0; i < 15; i++){
+        targetDoc.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = " + answerQuestion(clause1[i], operater[i], clause2[i])).setFontSize(15);
+    };
+  }
 
 
 //ランダムな整数を作成する関数
@@ -64,8 +126,7 @@ function createInteger(minInt , maxInt){
 //-------------------------------------------------------
 function createOperater(){
   const operater = ["+" , "-" , "×"] ;
-  const randomInt = Math.floor ( Math.random() * 2 ) ;
-  return operater[randomInt] ;
+  return operater[Math.floor ( Math.random() * 2 )] ;
 }
 
 //渡された数値と文字式を数式に変換して計算したものを返す関数
@@ -109,14 +170,26 @@ function addBrackets(value){
   }
 }
 
-//ランダムな小数点を作成する関数
-//---------------------関数の説明--------------------------------------------------------
-//最小値minDeciと最大値maxDeciを与えると最小値から最大値までの間のランダムな小数を返す
-//例えば0.1と100.0を与えると35.3などの値を返す
-//--------------------------------------------------------------------------------------
-// function createLargeInteger(maxInt){
-//   return randomInt ;
-// }
+const createProblem = (sort, problemRange, digit) => {
+    switch (sort) {
+      case 1:
+        return createIntegerProblem(problemRange);
+      case 2:
+        return createDecimalProblem(problemRange, digit);
+      default:
+        break
+    }
+    return;
+  }
 
-//ランダムな分数を作成する関数
-//解答を作成する関数
+//渡されたランダムな小数を指定された桁数の小数に変換する関数
+//---------------------関数の説明-------------------------
+//例えば23.45678と2が渡されると小数23.45を返す
+//-------------------------------------------------------
+function createDecimal(value, digit) {
+    let factorial = 1;
+    for(let i = 0; i < digit; i++){
+      factorial*=10
+    }
+    return Math.floor(value * factorial) / factorial;
+}
