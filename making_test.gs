@@ -2,10 +2,6 @@
 //(1)clasp openでGASを起動
 //(2)clasp pushでgoogleにソースコードをアップロード
 
-//作成するテストの問題を変更させる際はここから-----------------
-//整数同士の演算の問題であれば1を、
-//～～～であれば2を、
-//～～～であれば3を、
 const selectProblem = 1
 //整数だけの演算テストを作成する際はこちらを変更
 const minInteger = -100;
@@ -13,7 +9,6 @@ const maxInteger = 100;
 const clause1 = [] ;
 const clause2 = [] ;
 const operater = [] ;
-//------------------------------------ここまでの変数を変更する
 //ドキュメントIDの指定
 const openDocumentId = '1GLBoZMo5KZgVe8MVfi1GO_yS90nv4jgl799gnr-x37w'
 
@@ -104,7 +99,7 @@ function createDecimalProblem(problemRange, digit){
     };
     targetDoc.appendPageBreak();
     for(let i = 0; i < 15; i++){
-        targetDoc.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = " + answerQuestion(clause1[i], operater[i], clause2[i])).setFontSize(15);
+        targetDoc.appendParagraph( "(" + ( i + 1 ) + ")  " +  addBrackets(clause1[i]) + " " + operater[i] + " " + addBrackets(clause2[i]) + " = " + roundOffDecimal(answerQuestion(clause1[i], operater[i], clause2[i]), digit)).setFontSize(15);
     };
   }
 
@@ -182,7 +177,7 @@ const createProblem = (sort, problemRange, digit) => {
     return;
   }
 
-//渡されたランダムな小数を指定された桁数の小数に変換する関数
+//渡されたランダムな小数を指定された桁数以下を切り捨てて返す関数
 //---------------------関数の説明-------------------------
 //例えば23.45678と2が渡されると小数23.45を返す
 //-------------------------------------------------------
@@ -192,4 +187,16 @@ function createDecimal(value, digit) {
       factorial*=10
     }
     return Math.floor(value * factorial) / factorial;
+    
+}
+//渡されたランダムな小数を指定された桁数以下を四捨五入して返す関数
+//---------------------関数の説明-------------------------
+//例えば23.45678と2が渡されると小数23.46を返す
+//-------------------------------------------------------
+function roundOffDecimal(value, digit){
+    let factorial = 1;
+    for(let i = 0; i < digit; i++){
+      factorial*=10
+    }
+    return Math.round(value * factorial) / factorial;
 }
